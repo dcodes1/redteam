@@ -1,0 +1,21 @@
+import os
+import yaml
+import json
+
+
+def load_config(path: str) -> dict:
+    """
+    Load YAML or JSON configuration from the given path.
+    """
+    expanded = os.path.expanduser(path)
+    if not os.path.isfile(expanded):
+        raise FileNotFoundError(f"Config file not found: {expanded}")
+
+    with open(expanded, 'r') as f:
+        if expanded.endswith(('.yml', '.yaml')):
+            return yaml.safe_load(f)
+        elif expanded.endswith('.json'):
+            return json.load(f)
+        else:
+            # Fallback to YAML
+            return yaml.safe_load(f)
